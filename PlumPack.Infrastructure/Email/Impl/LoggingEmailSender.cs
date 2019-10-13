@@ -15,7 +15,7 @@ namespace PlumPack.Infrastructure.Email.Impl
         
         public Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            _logger.LogInformation("Email: {@email} Subject: {@subject} Message: {@htmlMessage}", email, subject, htmlMessage);
+            _logger.LogWarning("Email: {@email} Subject: {@subject} Message: {@htmlMessage}", email, subject, htmlMessage);
             return Task.CompletedTask;
         }
     }
