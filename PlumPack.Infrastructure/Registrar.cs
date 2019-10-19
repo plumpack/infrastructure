@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,8 +35,19 @@ namespace PlumPack.Infrastructure
             services.AddSingleton(migrationOptions);
 
             services.Configure<PlumPackOptions>(configuration.GetSection("PlumPack"));
-
             services.Configure<EmailOptions>(configuration.GetSection("Email"));
+            
+            var emailYml = "/etc/plumpack/identity-server/email.yml";
+            if (File.Exists(emailYml))
+            {
+                services.Configure<EmailOptions>(new ConfigurationBuilder().AddYamlFile(emailYml).Build());
+            }
+            
+            var plumPackYml = "/etc/plumpack/identity-server/plumpack.yml";
+            if (File.Exists(plumPackYml))
+            {
+                services.Configure<PlumPackOptions>(new ConfigurationBuilder().AddYamlFile(plumPackYml).Build());
+            }
         }
     }
 }
