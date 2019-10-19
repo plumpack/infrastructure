@@ -3,6 +3,7 @@ using System.Reflection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
+using PlumPack.Infrastructure.Email;
 using PlumPack.Infrastructure.Migrations;
 using ServiceStack.Data;
 using ServiceStack.Logging;
@@ -32,10 +33,9 @@ namespace PlumPack.Infrastructure
             // Add our migrations options, used to find the assembly which contains the migrations.
             services.AddSingleton(migrationOptions);
 
-            // Add our "PlumPack" options.
-            var plumPackOptions = new PlumPackOptions();
-            configuration.GetSection("PlumPack").Bind(plumPackOptions);
-            services.AddSingleton(plumPackOptions);
+            services.Configure<PlumPackOptions>(configuration.GetSection("PlumPack"));
+
+            services.Configure<EmailOptions>(configuration.GetSection("Email"));
         }
     }
 }

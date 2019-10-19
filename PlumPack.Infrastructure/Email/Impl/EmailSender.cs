@@ -2,17 +2,18 @@ using System;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 
 namespace PlumPack.Infrastructure.Email.Impl
 {
     [Service(typeof(IEmailSender))]
     public class EmailSender : IEmailSender
     {
-        private readonly PlumPackOptions _plumPackOptions;
+        private readonly EmailOptions _emailOptions;
 
-        public EmailSender(PlumPackOptions plumPackOptions)
+        public EmailSender(IOptions<EmailOptions> emailOptions)
         {
-            _plumPackOptions = plumPackOptions;
+            _emailOptions = emailOptions.Value;
         }
 
         public async Task SendEmailAsync(MailServer server, MailAddress from, MailAddress to, string subject, string email, bool html = true)
@@ -41,20 +42,17 @@ namespace PlumPack.Infrastructure.Email.Impl
 
         public Task SendEmailAsync(MailAddress to, string subject, string email, bool html = true)
         {
-            if (_plumPackOptions.Email == null)
-            {
-                throw new Exception("Email isn't configured.");
-            }
-
+            _emailOptions.AssertValid();
+            
             return SendEmailAsync(new MailServer
                 {
-                    Host = _plumPackOptions.Email.Host,
-                    Port = _plumPackOptions.Email.Port,
-                    UseAuthentication = _plumPackOptions.Email.UseAuthentication,
-                    Username = _plumPackOptions.Email.Username,
-                    Password = _plumPackOptions.Email.Password,
-                    UseSsl = _plumPackOptions.Email.UseSsl
-                }, new MailAddress(_plumPackOptions.Email.FromEmail, _plumPackOptions.Email.FromName), to, subject,
+                    Host = _emailOptions.Host,
+                    Port = _emailOptions.Port,
+                    UseAuthentication = _emailOptions.UseAuthentication,
+                    Username = _emailOptions.Username,
+                    Password = _emailOptions.Password,
+                    UseSsl = _emailOptions.UseSsl
+                }, new MailAddress(_emailOptions.FromEmail, _emailOptions.FromName), to, subject,
                 email,
                 html);
         }
