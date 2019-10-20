@@ -15,7 +15,7 @@ namespace PlumPack.Infrastructure
 {
     public static class Registrar
     {
-        public static void Register(IServiceCollection services, IConfiguration configuration, MigrationOptions migrationOptions)
+        public static void Register(IServiceCollection services, IConfiguration configuration, MigrationOptions migrationOptions, string addtionalConfigDirectory)
         {
             // Scan for all the service attributes in this assembly.
             ServiceContext.AddServicesFromAssembly(typeof(Registrar).Assembly, services);
@@ -36,14 +36,14 @@ namespace PlumPack.Infrastructure
 
             services.Configure<PlumPackOptions>(configuration.GetSection("PlumPack"));
             services.Configure<EmailOptions>(configuration.GetSection("Email"));
-            
-            var emailYml = "/etc/plumpack/identity-server/email.yml";
+
+            var emailYml = Path.Combine(addtionalConfigDirectory, "email.yml");
             if (File.Exists(emailYml))
             {
                 services.Configure<EmailOptions>(new ConfigurationBuilder().AddYamlFile(emailYml).Build());
             }
             
-            var plumPackYml = "/etc/plumpack/identity-server/plumpack.yml";
+            var plumPackYml = Path.Combine(addtionalConfigDirectory, "plumpack.yml");
             if (File.Exists(plumPackYml))
             {
                 services.Configure<PlumPackOptions>(new ConfigurationBuilder().AddYamlFile(plumPackYml).Build());
