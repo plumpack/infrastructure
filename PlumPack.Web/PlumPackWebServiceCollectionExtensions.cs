@@ -1,6 +1,7 @@
 using System.Reflection;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PlumPack.Web.Mvc;
@@ -36,6 +37,8 @@ namespace PlumPack.Web
                 builder.AddRazorRuntimeCompilation();
             }
 
+            services.Services.Configure<RouteOptions>(options => { options.LowercaseUrls = true; });
+            
             return services;
         }
 
