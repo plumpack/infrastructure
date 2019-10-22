@@ -1,0 +1,39 @@
+﻿@model PlumPack.Web.Models.ErrorViewModel
+@{
+    var error = Model?.Error;
+    var errorDescription = Model?.ErrorDescription;
+    var requestId = Model?.RequestId;
+}
+
+<div class="error-page">
+    <div class="page-header">
+        <h1>Error</h1>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="alert alert-danger">
+                Sorry, there was an error
+
+                @if (!string.IsNullOrEmpty(error))
+                {
+                    <strong>
+                        <em>
+                            : @error
+                        </em>
+                    </strong>
+
+                    if (!string.IsNullOrEmpty(errorDescription))
+                    {
+                        <div>@errorDescription</div>
+                    }
+                }
+            </div>
+
+            @if (!string.IsNullOrEmpty(requestId))
+            {
+                <div class="request-id">Request Id: @requestId</div>
+            }
+        </div>
+    </div>
+</div>
