@@ -10,6 +10,8 @@ using Microsoft.Extensions.Logging;
 using PlumPack.Infrastructure.Data;
 using PlumPack.Infrastructure.Migrations;
 using Serilog;
+using SharpDataAccess.Data;
+using SharpDataAccess.Migrations;
 
 namespace PlumPack.Web.Main
 {
