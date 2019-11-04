@@ -1,9 +1,13 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http.Extensions
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="~/assets/styles.css"/>
+    <script>
+        window.baseUrl = "@Context.Request.Scheme://@Context.Request.Host@Context.Request.PathBase/";
+    </script>
     <script type="text/javascript" src="~/assets/scripts.js"></script>
 </head>
 <body>
